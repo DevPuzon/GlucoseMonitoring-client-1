@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/background" >
+    <RelativeLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimaryDark">
+        <RelativeLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Glucose Monitoring"
+                android:textSize="25sp"
+                android:paddingLeft="10dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:layout_alignParentLeft="true"/>
+            <ImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu"
+                android:layout_marginRight="8dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_below="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/txt_mq3ppm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="85sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ppm"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="5dp"
+                android:textStyle="italic"
+                android:textSize="28sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/linear2">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="5dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:columnCount="2"
+                    android:focusableInTouchMode="true">
+                    <LinearLayout
+                        android:layout_column="0"
+                        android:layout_gravity="fill"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="BMP 180"
+                            android:textSize="22sp"
+                            android:layout_marginBottom="10dp"
+                            android:textColor="@color/colorPrimaryDark"/>
+                        <TextView
+                            android:id="@+id/txt_bmppressure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pressure : "
+                            android:textSize="17sp"
+                            android:textColor="@color/colortext"/>
+                        <TextView
+                            android:id="@+id/txt_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Temperature : "
+                            android:textSize="17sp"
+                            android:textColor="@color/colortext"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="fill"
+                        android:layout_column="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="DHT11"
+                            android:textSize="22sp"
+                            android:layout_marginBottom="10dp"
+                            android:textColor="@color/colorPrimaryDark"/>
+                        <TextView
+                            android:id="@+id/txt_humidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Humidity : "
+                            android:textSize="17sp"
+                            android:textColor="@color/colortext"/>
+                        <TextView
+                            android:id="@+id/txt_heatindex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Heat index : "
+                            android:textSize="17sp"
+                            android:textColor="@color/colortext"/>
+                        <TextView
+                            android:id="@+id/txt_celcius"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Celcius : "
+                            android:textSize="17sp"
+                            android:textColor="@color/colortext"/>
+                        <TextView
+                            android:id="@+id/txt_fahrenheit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fahrenheit : "
+                            android:textSize="17sp"
+                            android:textColor="@color/colortext"/>
+                    </LinearLayout>
+                </GridLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/activity_main_content"
+                    android:paddingBottom="110dp"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_play"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true">
+        <ImageView
+            android:id="@+id/img_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

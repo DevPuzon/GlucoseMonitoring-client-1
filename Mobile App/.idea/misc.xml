@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Github/Mix Project/GlucoseMonitoring/Mobile App/app/src/main/res/layout/activity_doc_prescription.xml" value="0.25" />
+        <entry key="..\:/Github/Mix Project/GlucoseMonitoring/Mobile App/app/src/main/res/layout/activity_doctor__main.xml" value="0.22" />
+        <entry key="..\:/Github/Mix Project/GlucoseMonitoring/Mobile App/app/src/main/res/layout/activity_login_form.xml" value="0.33" />
+        <entry key="..\:/Github/Mix Project/GlucoseMonitoring/Mobile App/app/src/main/res/layout/activity_main_content.xml" value="0.24592391304347827" />
+        <entry key="..\:/Github/Mix Project/GlucoseMonitoring/Mobile App/app/src/main/res/layout/auth_register_form.xml" value="0.33" />
+        <entry key="..\:/Github/Mix Project/GlucoseMonitoring/Mobile App/app/src/main/res/layout/ui_home.xml" value="0.33" />
+      </map>
+    </option>
+  </component>
+  <component name="Kotlin2JsCompilerArguments">
+    <option name="sourceMapEmbedSources" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

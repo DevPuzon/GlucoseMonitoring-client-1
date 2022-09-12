@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GlucoseTrainModel</string>
+    <string name="action_settings">Settings</string>
+    <string name="prompt">Choose the status</string>
+
+    <string-array name="status_array">
+        <item>Normal</item>
+        <item>Pre-diabetic</item>
+        <item>Diabetic</item>
+    </string-array>
+</resources>

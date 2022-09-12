@@ -1,0 +1,217 @@
+{
+  "project_info": {
+    "project_number": "208414469125",
+    "firebase_url": "https://prototypeproject-eeb91.firebaseio.com",
+    "project_id": "prototypeproject-eeb91",
+    "storage_bucket": "prototypeproject-eeb91.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208414469125:android:7abf5644a200f7639a006c",
+        "android_client_info": {
+          "package_name": "com.example.courseware"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208414469125-ii60uj8o4jl376upnuahjsp91uv3lfkf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.courseware",
+            "certificate_hash": "7774d6b845be92dfab999a86ea1cb294c86fe5e7"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NKhrdodprQwi0AxmVlAzmsVQcqjYYbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208414469125-rffqcdd3iskqq7g12hvbb2654ubeg6cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208414469125:android:60b218a8bf3fea9d9a006c",
+        "android_client_info": {
+          "package_name": "com.example.grabbasurero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208414469125-tckojpm5bc7cl0vqmt49ncnrlijbkkp2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.grabbasurero",
+            "certificate_hash": "362e2a89977838716d1d4d5240937db3c056c8bc"
+          }
+        },
+        {
+          "client_id": "208414469125-3q46litt71v6ajk1c8k2lotepparcgbu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.grabbasurero",
+            "certificate_hash": "7774d6b845be92dfab999a86ea1cb294c86fe5e7"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NKhrdodprQwi0AxmVlAzmsVQcqjYYbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208414469125-rffqcdd3iskqq7g12hvbb2654ubeg6cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208414469125:android:2ff9f4ca3fdd70019a006c",
+        "android_client_info": {
+          "package_name": "com.example.statisticsprobabilty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208414469125-3kpvakvgbp8utt7ugonguaji4f45o8hv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.statisticsprobabilty",
+            "certificate_hash": "7774d6b845be92dfab999a86ea1cb294c86fe5e7"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NKhrdodprQwi0AxmVlAzmsVQcqjYYbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208414469125-rffqcdd3iskqq7g12hvbb2654ubeg6cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208414469125:android:d9adfab6186f32c79a006c",
+        "android_client_info": {
+          "package_name": "com.softwaresolution.glucosemonitoringapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208414469125-n70b4ugf5c56o64lki11o45aqfjhgm1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softwaresolution.glucosemonitoringapp",
+            "certificate_hash": "362e2a89977838716d1d4d5240937db3c056c8bc"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NKhrdodprQwi0AxmVlAzmsVQcqjYYbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208414469125-rffqcdd3iskqq7g12hvbb2654ubeg6cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208414469125:android:a0af0b4860a87d9b9a006c",
+        "android_client_info": {
+          "package_name": "com.softwaresolution.pnp_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208414469125-dh9mbf40kigt91lg9658r0v9nhdu19e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softwaresolution.pnp_android",
+            "certificate_hash": "362e2a89977838716d1d4d5240937db3c056c8bc"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NKhrdodprQwi0AxmVlAzmsVQcqjYYbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208414469125-rffqcdd3iskqq7g12hvbb2654ubeg6cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208414469125:android:163b755e7cbc0e0e9a006c",
+        "android_client_info": {
+          "package_name": "com.softwaresolution.sakahan_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208414469125-gb8e6h18eg5vhct8c16lsv5168f59hek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softwaresolution.sakahan_app",
+            "certificate_hash": "362e2a89977838716d1d4d5240937db3c056c8bc"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NKhrdodprQwi0AxmVlAzmsVQcqjYYbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208414469125-rffqcdd3iskqq7g12hvbb2654ubeg6cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
