@@ -1,4 +1,14 @@
 package com.softwaresolution.glucosemonitoringapp.Pojo;
+//var ppm = 25;
+//var atHy = 1.00784; // atomic mass of hydrogen.
+//var gluHyMass = 12.12; //glucose hydroge mass
+//
+//var ppmGrams = (ppm * gluHyMass) /1000000; // ppm to grams
+//console.log("PPM Grams", ppmGrams);
+//var ppmMoles = ppmGrams / atHy ; // ppm grams to moles
+//console.log("PPM Moles", ppmMoles);
+//var mmols = ppmMoles * 1000000 ; // mol t mmol
+//console.log("mmol", mmols);
 
 import java.util.ArrayList;
 
@@ -35,7 +45,7 @@ public class ResultPojo {
         TimeStampId = timeStampId;
     }
 
-    public String getMinPPm() {
+    public String bglAve() {
         return minPPm;
     }
 

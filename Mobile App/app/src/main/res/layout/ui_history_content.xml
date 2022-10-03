@@ -28,7 +28,7 @@
                 android:layout_columnWeight="1"
                 android:layout_gravity="fill">
                 <TextView
-                    android:id="@+id/txt_mq3ppm"
+                    android:id="@+id/txt_bgl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -58,27 +58,7 @@
                     android:text="12/12/12 12:12:12"
                     android:layout_marginBottom="10dp"
                     android:layout_alignParentRight="true"/>
-                <TextView
-                    android:id="@+id/txt_humidity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Humidity : 18"
-                    android:textSize="13sp"
-                    android:textColor="@color/colorPrimaryDark"/> 
-                <TextView
-                    android:id="@+id/txt_celcius"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Celcius : 18"
-                    android:textSize="13sp"
-                    android:textColor="@color/colorPrimaryDark"/>
-                <TextView
-                    android:id="@+id/txt_fahrenheit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fahrenheit : 18"
-                    android:textSize="13sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+
             </LinearLayout>
         </GridLayout>
 

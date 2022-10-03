@@ -9,10 +9,12 @@
 <!--            android:icon="@drawable/ic_account"-->
 <!--            android:title="Account"/>-->
         <item
+            android:visible="false"
             android:id="@+id/nav_relativemessage"
             android:icon="@drawable/ic_message"
             android:title="Relative Message" />
         <item
+            android:visible="false"
             android:id="@+id/nav_doctormessage"
             android:icon="@drawable/ic_message"
             android:title="Doctor Message" />
@@ -21,6 +23,7 @@
             android:icon="@drawable/ic_history"
             android:title="History"/>
         <item
+            android:visible="false"
             android:id="@+id/nav_pres"
             android:icon="@drawable/ic_prescription"
             android:title="Prescription"/>

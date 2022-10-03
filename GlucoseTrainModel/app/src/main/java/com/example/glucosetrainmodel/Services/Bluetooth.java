@@ -65,18 +65,17 @@ public class Bluetooth  extends Thread{
             Log.d(TAG,ex.getLocalizedMessage());
         }
         myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-        BluetoothDevice dispositivo = myBluetooth.getRemoteDevice("98:D3:81:FD:7F:36");//connects to the device's address and checks if it's available
+        BluetoothDevice dispositivo = myBluetooth.getRemoteDevice("00:21:13:00:44:66");//connects to the device's address and checks if it's available
         btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
         mmInputStream = btSocket.getInputStream();
         btSocket.connect();
         beginListenForData();
-//        try {
-//            Log.d(TAG,"BT Name: "+name+"\nBT Address: "+address );
-//            sendMessage("putaaa");
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
+        try {
+            Log.d(TAG,"BT Name: "+name+"\nBT Address: "+address );
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 

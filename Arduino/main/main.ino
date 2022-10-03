@@ -1,9 +1,9 @@
 
 
 //BMPDeclare
-#include <Wire.h>
-#include <SFE_BMP180.h>
-SFE_BMP180 bmp180;
+//#include <Wire.h>
+//#include <SFE_BMP180.h>
+//SFE_BMP180 bmp180;
 
 // DHT11
 #include "DHT.h" 
@@ -23,21 +23,24 @@ DHT dht(DHTPIN, DHTTYPE);
 float           H2Curve[3]  =  {2.3, 0.93,-1.44};    
 float           Ro           =  10;               
 
-String mq3_ppm;//ppm
-String mq3_kohm;//Kohm
-String bmp_pressure;//hPa
-String bmp_temperature;//Celcius
-String dht_humidity;//Humidity
-String dht_celcius;//Celcius
-String dht_fahrenheit;//Fahrenheit
-String dht_heatindex;//Heat index
+String mq3_ppm = "0";//ppm
+String mq3_kohm = "0";//Kohm
+String bmp_pressure = "0";//hPa
+String bmp_temperature  = "0";//Celcius
+String dht_humidity = "0";//Humidity
+String dht_celcius = "0";//Celcius
+String dht_fahrenheit = "0";//Fahrenheit
+String dht_heatindex = "0";//Heat index
 void setup() { 
 
   Serial.begin(9600);  
-  if(initbmp180()){
-    initdht11();
-    initmq3(); 
-  }  
+//  if(initbmp180()){
+//    initdht11();
+//    initmq3(); 
+//  }  
+
+  initdht11();
+  initmq3(); 
 }
 
 void initmq3(){     
@@ -46,13 +49,13 @@ void initmq3(){
   mq3_kohm = String(Ro,2);//ppm
 }
 
-boolean initbmp180(){   
-  boolean ret = bmp180.begin();
-//  if (ret) {
-//    Serial.println("BMP180 init success");
-//  }
-  return ret;
-}
+//boolean initbmp180(){   
+//  boolean ret = bmp180.begin();
+////  if (ret) {
+////    Serial.println("BMP180 init success");
+////  }
+//  return ret;
+//}
 
 void initdht11(){  
   dht.begin();
@@ -60,7 +63,7 @@ void initdht11(){
  
 void loop() {
   //BMP
-  loopbmp180();
+//  loopbmp180();
   loopdht11();
   loopmq3(); 
 
@@ -68,26 +71,26 @@ void loop() {
   Serial.println(sendata);
 }
 
-void loopbmp180(){   
-  char status;
-  double T, P;  
-  status = bmp180.startTemperature();
-  if (status != 0) {
-    delay(status); 
-    status = bmp180.getTemperature(T);
-    if (status != 0) { 
-      status = bmp180.startPressure(3);
-      if (status != 0) {
-        delay(status); 
-        status = bmp180.getPressure(P, T);
-        if (status != 0) { 
-          bmp_pressure = String(P,2);//" hPa"
-          bmp_temperature = String(T,2); //Celcius
-        }
-      }
-    } 
-  }
-}
+//void loopbmp180(){   
+//  char status;
+//  double T, P;  
+//  status = bmp180.startTemperature();
+//  if (status != 0) {
+//    delay(status); 
+//    status = bmp180.getTemperature(T);
+//    if (status != 0) { 
+//      status = bmp180.startPressure(3);
+//      if (status != 0) {
+//        delay(status); 
+//        status = bmp180.getPressure(P, T);
+//        if (status != 0) { 
+//          bmp_pressure = String(P,2);//" hPa"
+//          bmp_temperature = String(T,2); //Celcius
+//        }
+//      }
+//    } 
+//  }
+//}
 
 void loopdht11(){ 
   float h = dht.readHumidity(); 

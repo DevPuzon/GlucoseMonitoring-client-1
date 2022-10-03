@@ -191,7 +191,7 @@ public class DoctorMain extends AppCompatActivity implements View.OnClickListene
 
 
     private void initApi() {
-        db.collection("Glucose Result")
+        db.collection("Glucose Result Client 1")
                 .orderBy("timeStampId", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

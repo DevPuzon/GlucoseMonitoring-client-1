@@ -50,7 +50,7 @@ public class History extends AppCompatActivity {
     }
 
     private void initApi() {
-        firestore.collection("Glucose Result").orderBy("timeStampId", Query.Direction.DESCENDING)
+        firestore.collection("Glucose Result Client 1").orderBy("timeStampId", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

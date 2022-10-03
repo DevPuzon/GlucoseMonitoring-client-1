@@ -92,18 +92,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mainHolder.chart.getXAxis().setGranularity(1f);
 
         SensorData sensorData = resultPojos.get(position).getMainData();
-        mainHolder.txt_mq3ppm.setText(String.valueOf(sensorData.getMq3_ppm()));
+        mainHolder.txt_bgl.setText(String.valueOf(sensorData.getBgl()));
         mainHolder.txt_timestamp.setText(resultPojos.get(position).getTimeStampId());
-        mainHolder.txt_humidity.setText(Html.fromHtml("<b>Humidity </b>"+String.valueOf((sensorData.getDht_humidity()))));
-        mainHolder.txt_celcius.setText(Html.fromHtml("<b>Celcius </b>"+String.valueOf(sensorData.getDht_celcius())+" °C"));
-        mainHolder.txt_fahrenheit.setText(Html.fromHtml("<b>Fahrenheit </b>"+String.valueOf(sensorData.getDht_fahrenheit())+" °F"));
         mainHolder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Result.class);
 
                 intent.putExtra("isViewHisory",false);
-                intent.putExtra("getMinPpm",String.valueOf(resultPojo.getMinPPm()));
+                intent.putExtra("bglAve",String.valueOf(resultPojo.bglAve()));
                 intent.putExtra("sensorData",new Gson().toJson(resultPojo.getMainData()));
                 intent.putExtra("entries",new Gson().toJson(resultPojo.getSensorDatas()));
                 context.startActivity(intent);
@@ -115,7 +112,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mainHolder.v_diabetes.setVisibility(View.GONE);
 
 
-        float mmol = sensorData.getMq3_ppm();
+        float mmol = sensorData.getBgl();
         if (mmol < 0.18){
             mainHolder.v_normal.setVisibility(View.VISIBLE);
             mainHolder.v_pre.setVisibility(View.VISIBLE);
@@ -134,17 +131,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static class MainHolder extends RecyclerView.ViewHolder {
         LineChart chart;
         CardView card;
-        TextView txt_mq3ppm,txt_timestamp,txt_humidity,txt_celcius,txt_fahrenheit,txt_status;
+        TextView txt_bgl,txt_timestamp, txt_status;
         View v_normal,v_pre,v_diabetes;
         public MainHolder(@NonNull View itemView) {
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.card);
             chart = (LineChart) itemView.findViewById(R.id.chart);
-            txt_mq3ppm = (TextView) itemView.findViewById(R.id.txt_mq3ppm);
+            txt_bgl = (TextView) itemView.findViewById(R.id.txt_bgl);
             txt_timestamp = (TextView) itemView.findViewById(R.id.txt_timestamp);
-            txt_humidity = (TextView) itemView.findViewById(R.id.txt_humidity);
-            txt_celcius = (TextView) itemView.findViewById(R.id.txt_celcius);
-            txt_fahrenheit = (TextView) itemView.findViewById(R.id.txt_fahrenheit);
             txt_status = (TextView) itemView.findViewById(R.id.txt_status);
 
             v_normal = (View) itemView.findViewById(R.id.v_normal);

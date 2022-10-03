@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class TrainModel {
+public class    TrainModel {
     private static String TAG = "TrainModelTAG";
     private static File myExternalFile;
     public static void saveData(String data){
