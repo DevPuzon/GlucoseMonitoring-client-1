@@ -92,12 +92,9 @@ public class ResultTrainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mainHolder.chart.getXAxis().setGranularity(1f);
 
         SensorData sensorData = trainPojos.get(position).getSensorData();
-        mainHolder.txt_mq3ppm.setText(String.valueOf(sensorData.getMq3_ppm()));
         mainHolder.txt_timestamp.setText(trainPojos.get(position).getCreatedAt());
-        mainHolder.txt_humidity.setText(Html.fromHtml("<b>Humidity </b>"+String.valueOf((sensorData.getDht_humidity()))));
-        mainHolder.txt_celcius.setText(Html.fromHtml("<b>Celcius </b>"+String.valueOf(sensorData.getDht_celcius())+" °C"));
-        mainHolder.txt_fahrenheit.setText(Html.fromHtml("<b>Fahrenheit </b>"+String.valueOf(sensorData.getDht_fahrenheit())+" °F"));
         mainHolder.txt_name.setText(trainPojos.get(position).getName());
+        mainHolder.txt_bgl.setText(String.valueOf(trainPojos.get(position).getSensorData().getBgl()));
         mainHolder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,17 +110,14 @@ public class ResultTrainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static class MainHolder extends RecyclerView.ViewHolder {
         LineChart chart;
         CardView card;
-        TextView txt_mq3ppm,txt_timestamp,txt_humidity,txt_celcius,txt_fahrenheit
+        TextView txt_timestamp,txt_bgl
                 ,txt_name;
         public MainHolder(@NonNull View itemView) {
             super(itemView);
             chart = (LineChart) itemView.findViewById(R.id.chart);
-            txt_mq3ppm = (TextView) itemView.findViewById(R.id.txt_mq3ppm);
             txt_timestamp = (TextView) itemView.findViewById(R.id.txt_timestamp);
-            txt_humidity = (TextView) itemView.findViewById(R.id.txt_humidity);
-            txt_celcius = (TextView) itemView.findViewById(R.id.txt_celcius);
-            txt_fahrenheit = (TextView) itemView.findViewById(R.id.txt_fahrenheit);
             txt_name = (TextView) itemView.findViewById(R.id.txt_name);
+            txt_bgl = (TextView) itemView.findViewById(R.id.txt_bgl);
             card = (CardView) itemView.findViewById(R.id.card);
         }
     }

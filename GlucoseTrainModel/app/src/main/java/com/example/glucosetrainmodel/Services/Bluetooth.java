@@ -8,11 +8,16 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.glucosetrainmodel.Pojo.SensorData;
 import com.google.gson.Gson;
+import com.example.glucosetrainmodel.Pojo.SensorData;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 public class Bluetooth  extends Thread{
@@ -39,20 +44,25 @@ public class Bluetooth  extends Thread{
     }
 
     public void bluetooth_connect_device() throws IOException {
+        String arduinoB = null;
         try
         {
             Log.d(TAG,"start" );
             myBluetooth = BluetoothAdapter.getDefaultAdapter();
             address = myBluetooth.getAddress();
             pairedDevices = myBluetooth.getBondedDevices();
+            int i = 0;
             if (pairedDevices.size()>0)
             {
                 for(BluetoothDevice bt : pairedDevices)
                 {
                     address=bt.getAddress().toString();
                     name = bt.getName().toString();
-                    Toast.makeText(context,"Connected", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG,"loop name"+name+"loop address Address: "+address );
+                    Log.d(TAG,"loop name"+name+"loop address Address: "+address +"  "+ String.valueOf(name.toLowerCase().equals("HC-05".toLowerCase())));
+                    if(name.toLowerCase().equals("HC-05".toLowerCase())){
+                        arduinoB = address;
+                    }
+                    i++;
                 }
             }else{
                 Toast.makeText(context,"Bluetooth not paired, please pair the blutooth HC-05 and refresh the application"
@@ -64,43 +74,34 @@ public class Bluetooth  extends Thread{
         catch(Exception ex){
             Log.d(TAG,ex.getLocalizedMessage());
         }
-        myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-        BluetoothDevice dispositivo = myBluetooth.getRemoteDevice("00:21:13:00:44:66");//connects to the device's address and checks if it's available
-        btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
-        mmInputStream = btSocket.getInputStream();
-        btSocket.connect();
-        beginListenForData();
-        try {
-            Log.d(TAG,"BT Name: "+name+"\nBT Address: "+address );
-        }
-        catch(Exception e){
-            e.printStackTrace();
+        if(arduinoB != null){
+            Toast.makeText(context,"Connected", Toast.LENGTH_LONG).show();
+            Log.d(TAG,"Connected hc 05"+address);
+            myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
+            BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
+            btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+            mmInputStream = btSocket.getInputStream();
+            btSocket.connect();
+            beginListenForData();
         }
     }
 
 
     private void sendSensorData(String data) {
         int endOfLineIndex = data.indexOf("-");
-        Log.d(TAG,"DATA "+ data);
         if (endOfLineIndex > 0) {
             SensorData sensorData;
             String[] datas = data.split(",");
-            Log.d(TAG,"size "+datas.length);
-            if (datas.length == 9){
+            if (datas.length == 3){
 //            mq3_ppm+","+mq3_kohm+","+bmp_pressure+","+bmp_temperature+","+dht_humidity+","+dht_celcius+","+dht_fahrenheit+","+dht_heatindex+",
                 try{
-                    sensorData = new SensorData(Integer.parseInt(datas[0]),
-                            Float.parseFloat(datas[1]),
-                            Float.parseFloat(datas[2]),
-                            Float.parseFloat(datas[3]),
-                            Float.parseFloat(datas[4]),
-                            Float.parseFloat(datas[5]),
-                            Float.parseFloat(datas[6]),
-                            Float.parseFloat(datas[7]));
-                    Log.d(TAG, new Gson().toJson(sensorData));
+                    sensorData = new SensorData(
+                            Float.parseFloat(datas[0]),
+                            Float.parseFloat(datas[1]));
+                    Log.d(TAG,"sendSensorData"+data);
                     iBluetooth.getData(sensorData);
                 }catch (Exception e){
-                    Log.d(TAG,"/////");
+                    Log.d(TAG,"error"+e.getLocalizedMessage());
                     iBluetooth.calibrating();
                 }
             }

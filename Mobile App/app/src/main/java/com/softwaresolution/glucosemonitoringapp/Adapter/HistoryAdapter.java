@@ -112,20 +112,38 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mainHolder.v_diabetes.setVisibility(View.GONE);
 
 
-        float mmol = sensorData.getBgl();
-        if (mmol < 0.18){
-            mainHolder.v_normal.setVisibility(View.VISIBLE);
-            mainHolder.v_pre.setVisibility(View.VISIBLE);
+        float bgl = sensorData.getBgl();
+//        if (mmol < 0.18){
+//            mainHolder.v_normal.setVisibility(View.VISIBLE);
+//            mainHolder.v_pre.setVisibility(View.VISIBLE);
+//            mainHolder.v_diabetes.setVisibility(View.VISIBLE);
+//            mainHolder.txt_status.setText("Diabetic");
+//        }else if(mmol > 0.19 && mmol < 0.20 ){
+//            mainHolder.v_normal.setVisibility(View.VISIBLE);
+//            mainHolder.v_pre.setVisibility(View.VISIBLE);
+//            mainHolder.txt_status.setText("Pre-diabetic");
+//        }else{
+//            mainHolder.v_normal.setVisibility(View.VISIBLE);
+//            mainHolder.txt_status.setText("Normal");
+//        }
+        String ret ="";
+        if (bgl > 125){
+            ret = "Diabetic";
+            mainHolder.v_normal.setVisibility(View.GONE);
+            mainHolder.v_pre.setVisibility(View.GONE);
             mainHolder.v_diabetes.setVisibility(View.VISIBLE);
-            mainHolder.txt_status.setText("Diabetic");
-        }else if(mmol > 0.19 && mmol < 0.20 ){
-            mainHolder.v_normal.setVisibility(View.VISIBLE);
+        }else if(bgl > 100 && bgl < 125){
+            ret = "Pre-diabetic";
+            mainHolder.v_normal.setVisibility(View.GONE);
             mainHolder.v_pre.setVisibility(View.VISIBLE);
-            mainHolder.txt_status.setText("Pre-diabetic");
+            mainHolder.v_diabetes.setVisibility(View.GONE);
         }else{
+            ret = "Normal";
             mainHolder.v_normal.setVisibility(View.VISIBLE);
-            mainHolder.txt_status.setText("Normal");
+            mainHolder.v_pre.setVisibility(View.GONE);
+            mainHolder.v_diabetes.setVisibility(View.GONE);
         }
+        mainHolder.txt_status.setText(ret);
     }
 
     public static class MainHolder extends RecyclerView.ViewHolder {

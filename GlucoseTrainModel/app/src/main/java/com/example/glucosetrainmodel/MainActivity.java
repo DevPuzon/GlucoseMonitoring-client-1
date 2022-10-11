@@ -50,7 +50,7 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements Bluetooth.IBluetooth {
 
-    private final String TAG = "Home";
+    private final String TAG = "MainActivity";
     private Bluetooth bluetooth;
 
     private Loading loading;
@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements Bluetooth.IBlueto
     private ArrayList<EntrySensorData> list = new ArrayList<>();
 
     private ImageView btn_menu;
-    private TextView txt_mq3ppm,txt_bmp_pressure,txt_bmp_temperature,txt_dht_humidity,txt_dht_celcius,txt_dht_fahrenheit,txt_dht_heatindex;
     private CardView btn_play;
     private ImageView img_play;
+    private TextView txt_bgl,txt_calib;
 
     private Permission permission;
     @Override
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements Bluetooth.IBlueto
         initListener();
         bluetooth = new Bluetooth(this,this);
         bluetooth.start();
-        Log.d(TAG,"Home on crreate");
+        Log.d(TAG,"Home on onCreate");
         loading = new Loading(this);
         initPermision();
     }
@@ -110,16 +110,17 @@ public class MainActivity extends AppCompatActivity implements Bluetooth.IBlueto
             public void onClick(View v) {
                 if (isplay){
                     //Playing
-                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
-                    btn_play.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
+//                    btn_play.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    btn_play.setVisibility(View.GONE);
                     onPlayDetect();
-                }else{
-                    //Stopped
-                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
-                    btn_play.setCardBackgroundColor(Color.WHITE);
-                    onStopDetect();
                 }
-                isplay = !isplay;
+//                else{
+//                    //Stopped
+//                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
+//                    btn_play.setCardBackgroundColor(Color.WHITE);
+//                    onStopDetect();
+//                }
             }
         });
     }
@@ -162,56 +163,48 @@ public class MainActivity extends AppCompatActivity implements Bluetooth.IBlueto
     }
 
     private void onStopDetect() {
+        btn_play.setVisibility(View.VISIBLE);
         Intent intent =new Intent(this,Result.class);
-        Log.d(TAG, new Gson().toJson(list));
-        ArrayList<Integer> mq3_ppmValues = new ArrayList<>();
-        for (int i = 0 ; i < ppmlist.size();i++){
-            mq3_ppmValues.add(Integer.valueOf((int) ppmlist.get(i).getY()));
+        float addBgl = 0;
+        for (int i = 0 ; i < bglList.size();i++){
+            addBgl +=bglList.get(i).getY();
+        }
+        float addVolt = 0;
+        for (int i = 0 ; i < voltList.size();i++){
+            addVolt +=voltList.get(i).getY();
         }
 
-        Integer getMinPpm = Collections.min(mq3_ppmValues);
-        data.setMq3_ppm(Float.valueOf(String.format("%.2f",ppmToMmol(mq3_ppmi))));
-        data.setBmp_pressure(bmp_pressuref);
-        data.setBmp_temperature(bmp_temperaturef);
-        data.setDht_humidity(dht_humidityf);
-        data.setDht_celcius(dht_celciusf);
-        data.setDht_fahrenheit(dht_fahrenheitf);
-        data.setDht_heatindex(dht_heatindexf);
+        bgl = addBgl/bglList.size();
+        volt = addVolt/voltList.size();
+        bgl = Float.parseFloat(String.format("%.2f",bgl));
+        volt = Float.parseFloat(String.format("%.2f",volt));
 
-        intent.putExtra("getMinPpm",String.valueOf(getMinPpm));
+        data.setBgl(bgl);
+        data.setVolt(volt);
+        Log.d(TAG, "new Gson().toJson(list)"+new Gson().toJson(list));
         intent.putExtra("sensorData",new Gson().toJson(data));
         intent.putExtra("entries",new Gson().toJson(list));
         startActivity(intent);
+        iCountGather = 0 ;
+        isplay =!isplay;
     }
 
     private void onPlayDetect() {
         list.clear();
-        mq3_ppm.clear();
-        bmp_pressure.clear();
-        bmp_temperature.clear();
-        dht_humidity.clear();
-        dht_celcius.clear();
-        dht_fahrenheit.clear();
-        dht_heatindex.clear();
-        mq3_ppmi = 0 ;
-        bmp_pressuref = 0 ;
-        dht_humidityf = 0 ;
-        dht_celciusf = 0 ;
-        dht_fahrenheitf = 0 ;
-        dht_heatindexf = 0 ;
+        bglList.clear();
+        voltList.clear();
+        bgl = 0 ;
+        volt = 0 ;
+        iCountGather = 0 ;
+        isplay =!isplay;
         adapter.notifyDataSetChanged();
     }
 
     private void init() {
         btn_play = (CardView) findViewById(R.id.btn_play);
         img_play = (ImageView) findViewById(R.id.img_play);
-        txt_mq3ppm = (TextView) findViewById(R.id.txt_mq3ppm);
-        txt_bmp_pressure = (TextView) findViewById(R.id.txt_bmppressure);
-        txt_bmp_temperature = (TextView) findViewById(R.id.txt_temperature);
-        txt_dht_humidity = (TextView) findViewById(R.id.txt_humidity);
-        txt_dht_celcius = (TextView) findViewById(R.id.txt_celcius);
-        txt_dht_fahrenheit = (TextView) findViewById(R.id.txt_fahrenheit);
-        txt_dht_heatindex = (TextView) findViewById(R.id.txt_heatindex);
+        txt_bgl = (TextView) findViewById(R.id.txt_bgl);
+        txt_calib = (TextView) findViewById(R.id.txt_calib);
 
         btn_menu = (ImageView) findViewById(R.id.btn_menu);
         relative = (RelativeLayout) findViewById(R.id.relative);
@@ -223,23 +216,15 @@ public class MainActivity extends AppCompatActivity implements Bluetooth.IBlueto
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private ArrayList<Entry> ppmlist = new ArrayList<>();
-    private ArrayList<Entry> mq3_ppm = new ArrayList<>();
-    private ArrayList<Entry> bmp_pressure = new ArrayList<>();
-    private ArrayList<Entry> bmp_temperature = new ArrayList<>();
-    private ArrayList<Entry> dht_humidity = new ArrayList<>();
-    private ArrayList<Entry> dht_celcius = new ArrayList<>();
-    private ArrayList<Entry> dht_fahrenheit = new ArrayList<>();
-    private ArrayList<Entry> dht_heatindex = new ArrayList<>();
 
-    private int mq3_ppmi;
-    private float bmp_pressuref;
-    private float bmp_temperaturef;
-    private float dht_humidityf;
-    private float dht_celciusf;
-    private float dht_fahrenheitf;
-    private float dht_heatindexf;
+    private ArrayList<Entry> bglList = new ArrayList<>();
+    private ArrayList<Entry> voltList = new ArrayList<>();
+
+    private float bgl;
+    private float volt;
     private int count = 0;
+    private int iCountGather = 0;
+    private int countGather = 30;
 
 
     private ArrayList<Entry> removeData(ArrayList<Entry> entries){
@@ -256,58 +241,35 @@ public class MainActivity extends AppCompatActivity implements Bluetooth.IBlueto
     public void getData(SensorData data) {
         loading.setMessage("Please wait...");
         loading.loadDialog.dismiss();
+        Log.d(TAG,"SensorData"+ new Gson().toJson(data));
         this.data = data;
-        list.clear();
-        Log.d(TAG, new Gson().toJson(data));
-        String getMMol = String.format("%.2f",ppmToMmol(data.getMq3_ppm()));
+
         if (!isplay){
-            Log.d(TAG,"Isplaying");
-            mq3_ppmi = getHighInt(mq3_ppmi, (int) data.getMq3_ppm());
-            bmp_pressuref = getHighFloat(bmp_pressuref,data.getBmp_pressure());
-            bmp_temperaturef = getHighFloat(bmp_temperaturef,data.getBmp_temperature());
-            dht_humidityf = getHighFloat(dht_humidityf,data.getDht_humidity());
-            dht_celciusf = getHighFloat(dht_celciusf,data.getDht_celcius());
-            dht_fahrenheitf = getHighFloat(dht_fahrenheitf,data.getDht_fahrenheit());
-            dht_heatindexf = getHighFloat(dht_heatindexf,data.getDht_heatindex());
+            //Playing
+            Log.d(TAG,"count >= countGather"+String.valueOf(count >= countGather));
+            if(iCountGather >= countGather){
+                onStopDetect();
+            }
+            bgl = getHighFloat(bgl,data.getBgl());
+            volt = getHighFloat(volt,data.getVolt());
+        }else{
+            bglList = removeData(bglList);
+            voltList = removeData(voltList);
         }
+        txt_bgl.setText(String.valueOf(data.getBgl()));
+        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(data.getVolt())+" volt"));
 
-        txt_mq3ppm.setText(getMMol);
-        txt_bmp_pressure.setText(Html.fromHtml("<b>Pressure </b>"+String.valueOf(data.getBmp_pressure())+" hPa"));
-        txt_bmp_temperature.setText(Html.fromHtml("<b>Temperature </b>"+String.valueOf(data.getBmp_temperature())+" °C"));
-        txt_dht_humidity.setText(Html.fromHtml("<b>Humidity </b>"+String.valueOf(data.getDht_humidity())));
-        txt_dht_celcius.setText(Html.fromHtml("<b>Celcius </b>"+String.valueOf(data.getDht_celcius())+" °C"));
-        txt_dht_fahrenheit.setText(Html.fromHtml("<b>Fahrenheit </b>"+String.valueOf(data.getDht_fahrenheit())+" °F"));
-        txt_dht_heatindex.setText(Html.fromHtml("<b>Heat index </b>"+String.valueOf(data.getDht_heatindex())));
 
-        ppmlist.add(new Entry(count,data.getMq3_ppm()));
-        mq3_ppm.add(new Entry(count,Float.valueOf(getMMol)));
-        bmp_pressure.add(new Entry(count,data.getBmp_pressure()));
-        bmp_temperature.add(new Entry(count,data.getBmp_temperature()));
-        dht_humidity.add(new Entry(count,data.getDht_humidity()));
-        dht_celcius.add(new Entry(count,data.getDht_celcius()));
-        dht_fahrenheit.add(new Entry(count,data.getDht_fahrenheit()));
-        dht_heatindex.add(new Entry(count,data.getDht_heatindex()));
+        bglList.add(new Entry(count,data.getBgl()));
+        voltList.add(new Entry(count,data.getVolt()));
 
-        ppmlist = removeData(ppmlist);
-        mq3_ppm = removeData(mq3_ppm);
-        bmp_pressure = removeData(bmp_pressure);
-        bmp_temperature= removeData(bmp_temperature);
-        dht_humidity = removeData(dht_humidity);
-        dht_celcius = removeData(dht_celcius);
-        dht_fahrenheit= removeData(dht_fahrenheit);
-        dht_heatindex= removeData(dht_heatindex);
-
-        list.add(new EntrySensorData("ppm",ppmlist));
-        list.add(new EntrySensorData("Ketones mmol",mq3_ppm));
-        list.add(new EntrySensorData("Pressure",bmp_pressure));
-        list.add(new EntrySensorData("Bmp Temperature",bmp_temperature));
-        list.add(new EntrySensorData("Humidity",dht_humidity));
-        list.add(new EntrySensorData("Heat index",dht_heatindex));
-        list.add(new EntrySensorData("Celcius",dht_celcius));
-        list.add(new EntrySensorData("Fahrenheit",dht_fahrenheit));
+        list.clear();
+        list.add(new EntrySensorData("mg/dl",bglList));
+        list.add(new EntrySensorData("volt",voltList));
 
         adapter.notifyDataSetChanged();
         count++;
+        iCountGather ++;
     }
 
     private Float getHighFloat(float def,float now){

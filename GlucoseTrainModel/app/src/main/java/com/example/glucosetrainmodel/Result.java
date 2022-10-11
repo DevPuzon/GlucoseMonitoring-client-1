@@ -43,8 +43,6 @@ import java.util.Date;
 public class Result extends AppCompatActivity {
 
     private String TAG="ResultPojo";
-    private TextView txt_mq3ppm,txt_bmp_pressure,txt_bmp_temperature,txt_dht_humidity,
-            txt_dht_celcius,txt_dht_fahrenheit,txt_dht_heatindex,txt_calib;
 
     private SensorData sensorData;
 
@@ -57,6 +55,7 @@ public class Result extends AppCompatActivity {
     private  TextView txt_name;
     private Spinner spin_status;
     private ArrayList<TrainPojo> trainPojos = new ArrayList<>();
+    private TextView txt_bgl, txt_calib;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +68,7 @@ public class Result extends AppCompatActivity {
         sensorData = new Gson().fromJson(passSensordata,SensorData.class);
         list = new Gson().fromJson(passEntries, new TypeToken<ArrayList<EntrySensorData>>(){}.getType());
         Log.d(TAG, passSensordata);
-        Log.d(TAG, passEntries);
+        Log.d(TAG, "passEntries"+passEntries);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -100,14 +99,10 @@ public class Result extends AppCompatActivity {
 
             }
         });
-        txt_mq3ppm.setText(String.valueOf(sensorData.getMq3_ppm()));
-        txt_calib.setText(Html.fromHtml("<b>Default calibrated </b>"+String.valueOf(getMinPpm)+" ppm"));
-        txt_bmp_pressure.setText(Html.fromHtml("<b>Pressure </b>"+String.valueOf(sensorData.getBmp_pressure())+" hPa"));
-        txt_bmp_temperature.setText(Html.fromHtml("<b>Temperature </b>"+String.valueOf(sensorData.getBmp_temperature())+" °C"));
-        txt_dht_humidity.setText(Html.fromHtml("<b>Humidity </b>"+String.valueOf(sensorData.getDht_humidity())));
-        txt_dht_celcius.setText(Html.fromHtml("<b>Celcius </b>"+String.valueOf(sensorData.getDht_celcius())+" °C"));
-        txt_dht_fahrenheit.setText(Html.fromHtml("<b>Fahrenheit </b>"+String.valueOf(sensorData.getDht_fahrenheit())+" °F"));
-        txt_dht_heatindex.setText(Html.fromHtml("<b>Heat index </b>"+String.valueOf(sensorData.getDht_heatindex())));
+
+        txt_bgl.setText(String.valueOf(sensorData.getBgl()));
+        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(sensorData.getVolt())+" volt"));
+
     }
 
     @Override
@@ -121,13 +116,7 @@ public class Result extends AppCompatActivity {
         txt_name = (TextView) findViewById(R.id.txt_name);
         btn_save = (Button) findViewById(R.id.btn_save);
         txt_calib = (TextView) findViewById(R.id.txt_calib);
-        txt_mq3ppm = (TextView) findViewById(R.id.txt_mq3ppm);
-        txt_bmp_pressure = (TextView) findViewById(R.id.txt_bmppressure);
-        txt_bmp_temperature = (TextView) findViewById(R.id.txt_temperature);
-        txt_dht_humidity = (TextView) findViewById(R.id.txt_humidity);
-        txt_dht_celcius = (TextView) findViewById(R.id.txt_celcius);
-        txt_dht_fahrenheit = (TextView) findViewById(R.id.txt_fahrenheit);
-        txt_dht_heatindex = (TextView) findViewById(R.id.txt_heatindex);
+        txt_bgl = (TextView) findViewById(R.id.txt_bgl);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         adapter = new SensorDataAdapter(Result.this,list);
@@ -161,6 +150,6 @@ public class Result extends AppCompatActivity {
     private void saveData(){
         trainPojos.add(new TrainPojo(txt_name.getText().toString(),
                 status,formattedDate,sensorData,list,getMinPpm));
-         TrainModel.saveData(new Gson().toJson(trainPojos));
+        TrainModel.saveData(new Gson().toJson(trainPojos));
     }
 }

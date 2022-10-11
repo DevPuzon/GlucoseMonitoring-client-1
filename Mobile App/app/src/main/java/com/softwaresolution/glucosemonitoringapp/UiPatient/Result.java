@@ -42,7 +42,6 @@ public class Result extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SensorDataAdapter adapter;
     private Button btn_save;
-    private String bglAve,voltAve;
     private Loading loading;
     public boolean isViewHisory = false;
     @Override
@@ -56,8 +55,6 @@ public class Result extends AppCompatActivity {
 
         loading = new Loading(Result.this);
         Intent intent = getIntent();
-        bglAve =intent.getStringExtra("bglAve");
-        voltAve =intent.getStringExtra("voltAve");
         String passSensordata =intent.getStringExtra("sensorData");
         String passEntries =intent.getStringExtra("entries");
         isViewHisory =intent.getBooleanExtra("isViewHisory",true);
@@ -75,7 +72,7 @@ public class Result extends AppCompatActivity {
 
     private void initProperties() {
         txt_bgl.setText(String.valueOf(sensorData.getBgl()));
-        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(voltAve)+" volt"));
+        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(sensorData.getBgl())+" volt"));
 
         status = getStatus(sensorData.getBgl());
         txt_status.setText( status.substring(0, 1).toUpperCase() + status.substring(1));
@@ -119,20 +116,24 @@ public class Result extends AppCompatActivity {
         });
     }
 
-    private String getStatus(float mmol){
+    private String getStatus(float bgl){
+        Log.d(TAG, "getStatus"+String.valueOf(bgl));
         String ret = "";
-        if (mmol < 0.18){
+        if (bgl > 125){
             ret = "diabetic";
-            findViewById(R.id.v_normal).setVisibility(View.VISIBLE);
-            findViewById(R.id.v_pre).setVisibility(View.VISIBLE);
+            findViewById(R.id.v_normal).setVisibility(View.GONE);
+            findViewById(R.id.v_pre).setVisibility(View.GONE);
             findViewById(R.id.v_diabetes).setVisibility(View.VISIBLE);
-        }else if(mmol > 0.19 && mmol < 0.20){
+        }else if(bgl > 100 && bgl < 125){
             ret = "pre-diabetic";
-            findViewById(R.id.v_normal).setVisibility(View.VISIBLE);
+            findViewById(R.id.v_normal).setVisibility(View.GONE);
             findViewById(R.id.v_pre).setVisibility(View.VISIBLE);
+            findViewById(R.id.v_diabetes).setVisibility(View.GONE);
         }else{
             ret = "normal";
             findViewById(R.id.v_normal).setVisibility(View.VISIBLE);
+            findViewById(R.id.v_pre).setVisibility(View.GONE);
+            findViewById(R.id.v_diabetes).setVisibility(View.GONE);
         }
         return ret;
     }
@@ -146,7 +147,7 @@ public class Result extends AppCompatActivity {
 
     //Api
     private void saveData(){
-        ResultPojo result = new ResultPojo(sensorData,list,formattedDate,bglAve,status);
+        ResultPojo result = new ResultPojo(sensorData,list,formattedDate,String.valueOf(sensorData.getBgl()),status);
         loading.loadDialog.show();
         firestore.collection("Glucose Result Client 1")
                 .document(formattedDate).set(result)

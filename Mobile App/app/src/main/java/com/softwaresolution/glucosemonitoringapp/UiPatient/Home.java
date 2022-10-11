@@ -73,41 +73,53 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
                 iHome.onClickMenu();
             }
         });
+
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isplay){
                     //Playing
-                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
-                    btn_play.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
+//                    btn_play.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    btn_play.setVisibility(View.GONE);
                     onPlayDetect();
-                }else{
-                    //Stopped
-                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
-                    btn_play.setCardBackgroundColor(Color.WHITE);
-                    onStopDetect();
                 }
-                isplay = !isplay;
+//                else{
+//                    //Stopped
+//                    img_play.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
+//                    btn_play.setCardBackgroundColor(Color.WHITE);
+//                    onStopDetect();
+//                }
             }
         });
     }
 
+
     private void onStopDetect() {
+        btn_play.setVisibility(View.VISIBLE);
         Intent intent =new Intent(getContext(),Result.class);
-        ArrayList<Integer> bglValues = new ArrayList<>();
+        float addBgl = 0;
         for (int i = 0 ; i < bglList.size();i++){
-            bglValues.add(Integer.valueOf((int) bglList.get(i).getY()));
+            addBgl +=bglList.get(i).getY();
         }
-        float bglAve = bgl;
-        float voltAve = volt;
+        float addVolt = 0;
+        for (int i = 0 ; i < voltList.size();i++){
+            addVolt +=voltList.get(i).getY();
+        }
+
+        bgl = addBgl/bglList.size();
+        volt = addVolt/voltList.size();
+        bgl = Float.parseFloat(String.format("%.2f",bgl));
+        volt = Float.parseFloat(String.format("%.2f",volt));
 
         data.setBgl(bgl);
         data.setVolt(volt);
-        intent.putExtra("bglAve",String.valueOf(bglAve));
-        intent.putExtra("voltAve",String.valueOf(voltAve));
+        Log.d(TAG, "new Gson().toJson(list)"+new Gson().toJson(list));
         intent.putExtra("sensorData",new Gson().toJson(data));
         intent.putExtra("entries",new Gson().toJson(list));
         startActivity(intent);
+        iCountGather = 0 ;
+        isplay =!isplay;
     }
 
     private void onPlayDetect() {
@@ -116,6 +128,8 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
         voltList.clear();
         bgl = 0 ;
         volt = 0 ;
+        iCountGather = 0 ;
+        isplay =!isplay;
         adapter.notifyDataSetChanged();
     }
 
@@ -141,6 +155,8 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
     private float bgl;
     private float volt;
     private int count = 0;
+    private int iCountGather = 0;
+    private int countGather = 5;
 
 
     private ArrayList<Entry> removeData(ArrayList<Entry> entries){
@@ -164,9 +180,13 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
         loading.loadDialog.dismiss();
         Log.d(TAG,"SensorData"+ new Gson().toJson(data));
         this.data = data;
-        list.clear();
 
         if (!isplay){
+            //Playing
+            Log.d(TAG,"count >= countGather"+String.valueOf(count >= countGather));
+            if(iCountGather >= countGather){
+                onStopDetect();
+            }
             bgl = getHighFloat(bgl,data.getBgl());
             volt = getHighFloat(volt,data.getVolt());
         }else{
@@ -174,17 +194,19 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
             voltList = removeData(voltList);
         }
         txt_bgl.setText(String.valueOf(data.getBgl()));
-        txt_calib.setText(Html.fromHtml("<b>Default calibrated </b>"+String.valueOf(data.getVolt())+" volt"));
+        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(data.getVolt())+" volt"));
 
 
         bglList.add(new Entry(count,data.getBgl()));
         voltList.add(new Entry(count,data.getVolt()));
 
+        list.clear();
         list.add(new EntrySensorData("mg/dl",bglList));
         list.add(new EntrySensorData("volt",voltList));
 
         adapter.notifyDataSetChanged();
         count++;
+        iCountGather ++;
     }
 
     double ppmToMmol(float PPM){

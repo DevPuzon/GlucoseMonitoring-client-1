@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="Default calibrated"
+                android:text="Default volt calibrated"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp" />
         </LinearLayout>

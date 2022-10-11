@@ -50,8 +50,8 @@ public class ResultTrainData extends AppCompatActivity {
         String intentList = getIntent().getStringExtra("list");
         String title =getIntent().getStringExtra("title");
         setTitle(title);
+
         list =  new Gson().fromJson(intentList,new TypeToken<ArrayList<TrainPojo>>(){}.getType());
-        Log.d(TAG,new Gson().toJson(intentList));
         loading.loadDialog.dismiss();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         adapter = new ResultTrainAdapter(ResultTrainData.this,list,title);
