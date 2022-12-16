@@ -34,6 +34,7 @@ import com.softwaresolution.glucosemonitoringapp.Utils.BitmapUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public class RegisterForm extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "RegisterForm";
@@ -142,7 +143,8 @@ public class RegisterForm extends AppCompatActivity implements View.OnClickListe
     private void saveAccountDb(final String user) {
 
         Uri file = BitmapUtils.getImageUri(RegisterForm.this,bitmapProfile);
-        final StorageReference storageReference = reference.child("Glucose User account");
+        final StorageReference storageReference = reference.child("Glucose User account/"
+                + UUID.randomUUID().toString());
 
         storageReference.putFile(file).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override

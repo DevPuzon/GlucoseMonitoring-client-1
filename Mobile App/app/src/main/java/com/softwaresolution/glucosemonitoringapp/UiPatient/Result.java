@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,6 +44,8 @@ public class Result extends AppCompatActivity {
     private SensorDataAdapter adapter;
     private Button btn_save;
     private Loading loading;
+
+    private static FirebaseAuth auth = FirebaseAuth.getInstance();
     public boolean isViewHisory = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class Result extends AppCompatActivity {
 
     private void initProperties() {
         txt_bgl.setText(String.valueOf(sensorData.getBgl()));
-        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(sensorData.getBgl())+" volt"));
+        txt_calib.setText(Html.fromHtml("<b>Default volt calibrated </b>"+String.valueOf(sensorData.getVolt())+" volt"));
 
         status = getStatus(sensorData.getBgl());
         txt_status.setText( status.substring(0, 1).toUpperCase() + status.substring(1));
@@ -119,12 +122,12 @@ public class Result extends AppCompatActivity {
     private String getStatus(float bgl){
         Log.d(TAG, "getStatus"+String.valueOf(bgl));
         String ret = "";
-        if (bgl > 125){
+        if (bgl >= 200){
             ret = "diabetic";
             findViewById(R.id.v_normal).setVisibility(View.GONE);
             findViewById(R.id.v_pre).setVisibility(View.GONE);
             findViewById(R.id.v_diabetes).setVisibility(View.VISIBLE);
-        }else if(bgl > 100 && bgl < 125){
+        }else if(bgl >= 140 && bgl <= 160){
             ret = "pre-diabetic";
             findViewById(R.id.v_normal).setVisibility(View.GONE);
             findViewById(R.id.v_pre).setVisibility(View.VISIBLE);
@@ -150,6 +153,8 @@ public class Result extends AppCompatActivity {
         ResultPojo result = new ResultPojo(sensorData,list,formattedDate,String.valueOf(sensorData.getBgl()),status);
         loading.loadDialog.show();
         firestore.collection("Glucose Result Client 1")
+                .document(auth.getCurrentUser().getUid())
+                .collection("Glucose Result Client 1")
                 .document(formattedDate).set(result)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

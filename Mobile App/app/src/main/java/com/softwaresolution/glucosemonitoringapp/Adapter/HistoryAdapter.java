@@ -127,12 +127,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //            mainHolder.txt_status.setText("Normal");
 //        }
         String ret ="";
-        if (bgl > 125){
+        if (bgl > 200){
             ret = "Diabetic";
             mainHolder.v_normal.setVisibility(View.GONE);
             mainHolder.v_pre.setVisibility(View.GONE);
             mainHolder.v_diabetes.setVisibility(View.VISIBLE);
-        }else if(bgl > 100 && bgl < 125){
+
+        }else if(bgl >= 140 && bgl <= 160){
             ret = "Pre-diabetic";
             mainHolder.v_normal.setVisibility(View.GONE);
             mainHolder.v_pre.setVisibility(View.VISIBLE);

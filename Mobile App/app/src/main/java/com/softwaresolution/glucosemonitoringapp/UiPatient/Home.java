@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.data.Entry;
@@ -45,7 +46,7 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
     private ArrayList<EntrySensorData> list = new ArrayList<>();
 
     private ImageView btn_menu;
-    private TextView txt_bgl,txt_calib;
+    private TextView txt_bgl,txt_calib,txt_calibrating;
     private CardView btn_play;
     private ImageView img_play;
     private View v;
@@ -98,22 +99,35 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
     private void onStopDetect() {
         btn_play.setVisibility(View.VISIBLE);
         Intent intent =new Intent(getContext(),Result.class);
-        float addBgl = 0;
+//        float addBgl = 0;
+//        for (int i = 0 ; i < bglList.size();i++){
+//            addBgl +=bglList.get(i).getY();
+//        }
+//        float addVolt = 0;
+//        for (int i = 0 ; i < voltList.size();i++){
+//            addVolt +=voltList.get(i).getY();
+//        }
+
+        float _bgl = 0;
+        float _volt = 0;
         for (int i = 0 ; i < bglList.size();i++){
-            addBgl +=bglList.get(i).getY();
+            float def =bglList.get(i).getY();
+            if(def > _bgl){
+                _bgl = def;
+            }
         }
-        float addVolt = 0;
         for (int i = 0 ; i < voltList.size();i++){
-            addVolt +=voltList.get(i).getY();
+            float def =voltList.get(i).getY();
+            if(def > _volt){
+                _volt = def;
+            }
         }
 
-        bgl = addBgl/bglList.size();
-        volt = addVolt/voltList.size();
-        bgl = Float.parseFloat(String.format("%.2f",bgl));
-        volt = Float.parseFloat(String.format("%.2f",volt));
+        _bgl = Float.parseFloat(String.format("%.2f",_bgl));
+        _volt = Float.parseFloat(String.format("%.2f",_volt));
 
-        data.setBgl(bgl);
-        data.setVolt(volt);
+        data.setBgl(_bgl);
+        data.setVolt(_volt);
         Log.d(TAG, "new Gson().toJson(list)"+new Gson().toJson(list));
         intent.putExtra("sensorData",new Gson().toJson(data));
         intent.putExtra("entries",new Gson().toJson(list));
@@ -138,7 +152,8 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
         img_play = (ImageView) v.findViewById(R.id.img_play);
         txt_bgl = (TextView) v.findViewById(R.id.txt_bgl);
         txt_calib = (TextView) v.findViewById(R.id.txt_calib);
-
+        txt_calibrating = (TextView) v.findViewById(R.id.txt_calibrating);
+        txt_calibrating.setVisibility(View.GONE);
         btn_menu = (ImageView) v.findViewById(R.id.btn_menu);
         relative = (RelativeLayout) v.findViewById(R.id.relative);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
@@ -156,7 +171,7 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
     private float volt;
     private int count = 0;
     private int iCountGather = 0;
-    private int countGather = 5;
+    private int countGather = 20;
 
 
     private ArrayList<Entry> removeData(ArrayList<Entry> entries){
@@ -174,13 +189,28 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
     }
 
     private SensorData data;
+    boolean calibrated = false;
+    int calibrated_i = 0 ;
     @Override
     public void getData(SensorData data) {
         loading.setMessage("Please wait...");
         loading.loadDialog.dismiss();
+        data.setBgl(recalculateBGL(data.getBgl()));
+
         Log.d(TAG,"SensorData"+ new Gson().toJson(data));
         this.data = data;
-
+        if(data.getCalibrated() && !calibrated){
+          txt_calibrating.setVisibility(View.VISIBLE);
+          btn_play.setVisibility(View.GONE);
+          calibrated = true;
+          calibrated_i = 1;
+          return;
+        } 
+        if(data.getCalibrated() && calibrated && calibrated_i ==1){
+            calibrated_i = 2;
+            txt_calibrating.setVisibility(View.GONE);
+            btn_play.setVisibility(View.VISIBLE);
+        }
         if (!isplay){
             //Playing
             Log.d(TAG,"count >= countGather"+String.valueOf(count >= countGather));
@@ -207,6 +237,26 @@ public class Home extends Fragment implements Bluetooth.IBluetooth {
         adapter.notifyDataSetChanged();
         count++;
         iCountGather ++;
+    }
+
+    private float recalculateBGL(float bglA) {
+        float bgl = 0;
+        if(bglA > 90){
+            bgl =bglA+ 25;
+        }else if(bglA > 60){
+            bgl =bglA+ 55;
+        }else if (bglA >40){
+            bgl =bglA+ 65;
+        }else{
+            bgl =bglA+ 90;
+        }
+
+        boolean isFasting = ((Switch) v.findViewById(R.id.sw_is_fasting)).isChecked();
+        if(isFasting){
+            bgl = Float.parseFloat(String.valueOf(bgl - 30.66));
+        }
+
+        return bgl;
     }
 
     double ppmToMmol(float PPM){

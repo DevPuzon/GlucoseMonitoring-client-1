@@ -92,11 +92,12 @@ public class Bluetooth  extends Thread{
         if (endOfLineIndex > 0) {
             SensorData sensorData;
             String[] datas = data.split(",");
-            if (datas.length == 3){
+            Log.d(TAG,"sendSensorData ==="+data);
+            if (datas.length == 4){
 //            mq3_ppm+","+mq3_kohm+","+bmp_pressure+","+bmp_temperature+","+dht_humidity+","+dht_celcius+","+dht_fahrenheit+","+dht_heatindex+",
                 try{
                     sensorData = new SensorData(Float.parseFloat(datas[0]),
-                            Float.parseFloat(datas[1]));
+                            Float.parseFloat(datas[1]),Boolean.parseBoolean(datas[2]));
                     Log.d(TAG,"sendSensorData"+data);
                     iBluetooth.getData(sensorData);
                 }catch (Exception e){

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -20,7 +21,14 @@ import com.softwaresolution.glucosemonitoringapp.Interactive.Loading;
 import com.softwaresolution.glucosemonitoringapp.Pojo.ResultPojo;
 import com.softwaresolution.glucosemonitoringapp.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class History extends AppCompatActivity {
     private String TAG = "History";
@@ -29,6 +37,7 @@ public class History extends AppCompatActivity {
     private HistoryAdapter adapter;
     private ArrayList<ResultPojo> list = new ArrayList<>();
 
+    private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private Loading loading;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +59,10 @@ public class History extends AppCompatActivity {
     }
 
     private void initApi() {
-        firestore.collection("Glucose Result Client 1").orderBy("timeStampId", Query.Direction.DESCENDING)
+        firestore.collection("Glucose Result Client 1")
+                .document(auth.getCurrentUser().getUid())
+                .collection("Glucose Result Client 1")
+                .orderBy("timeStampId", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -63,6 +75,24 @@ public class History extends AppCompatActivity {
                                 Log.d(TAG, new Gson().toJson(resultPojo));
                                 list.add(resultPojo);
                             }
+//                            Arrays.sort(list, new Comparator< ResultPojo >() {
+                            Collections.sort(list, new Comparator<ResultPojo>() {
+                                @Override
+                                public int compare(ResultPojo first, ResultPojo second) {
+                                    long firstStamp = 0;
+                                    long secondStamp = 0;
+                                    DateFormat format = new SimpleDateFormat("dd-MMM-yyyy  HH:mm:ss");
+                                    try {
+                                        firstStamp = format.parse(first.getTimeStampId()).getTime();
+                                        secondStamp = format.parse(second.getTimeStampId()).getTime();
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d(TAG,  "firstStamp "+ String.valueOf(firstStamp));
+                                    Log.d(TAG,  "secondStamp "+ String.valueOf(secondStamp));
+                                    return Integer.valueOf(String.valueOf(Long.valueOf(secondStamp).compareTo(firstStamp)));
+                                }
+                            });
                             adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents.", task.getException());

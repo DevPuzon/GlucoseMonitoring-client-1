@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GlucoseMonitoringApp</string>
+    <string name="app_name">GlucoSense</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

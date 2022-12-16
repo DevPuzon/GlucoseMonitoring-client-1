@@ -5,6 +5,7 @@ public class SensorData {
 
     private Float bgl;
     private Float volt;
+    private boolean isCalibrated;
 
     /**
      * No args constructor for use in serialization
@@ -12,10 +13,11 @@ public class SensorData {
      */
     public SensorData() {
     }
-    public SensorData(Float bgl, Float volt) {
+    public SensorData(Float bgl, Float volt,boolean isCalibrated) {
         super();
         this.bgl = bgl;
         this.volt = volt;
+        this.isCalibrated = isCalibrated;
     }
 
     public Float getBgl() {
@@ -34,4 +36,11 @@ public class SensorData {
         this.volt = volt;
     }
 
+    public boolean getCalibrated() {
+        return isCalibrated;
+    }
+
+    public void setIsCalibrated(boolean isCalibrated) {
+        this.isCalibrated = isCalibrated;
+    }
 }
